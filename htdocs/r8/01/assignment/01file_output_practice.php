@@ -16,7 +16,6 @@
 
 <h2>保存されたメモ</h2>
 <?php
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $memo = $_POST["memo"];
     file_put_contents("practice_memo.txt", $memo . "\n", FILE_APPEND);
@@ -25,9 +24,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 if (file_exists("practice_memo.txt")) {
     foreach (file("practice_memo.txt") as $memo) {
+        // \nを<br>にエスケープさせるためにhtmlspecialcharsを使っている
+        // nl2brでもできる
+        // echo nl2br(file_get_contents("practice_memo.txt"));
         echo htmlspecialchars($memo) . "<br>";
     }
 } else {
     echo "<p>メモがありません。</p>";
 }
+
+
 ?>

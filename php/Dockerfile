@@ -1,6 +1,10 @@
-FROM php:8.2-apache
+FROM php:8.2-apache-bookworm
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Docker VM から deb.debian.org:80 へ届かないことがあるため HTTPS + リトライを使う
+RUN sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list.d/debian.sources \
+    && printf 'Acquire::Retries "5";\nAcquire::https::Timeout "30";\n' > /etc/apt/apt.conf.d/80-retries \
+    && for i in 1 2 3; do apt-get update && break || sleep 5; done \
+    && apt-get install -y --no-install-recommends \
         libpng-dev \
         libjpeg-dev \
         libfreetype6-dev \

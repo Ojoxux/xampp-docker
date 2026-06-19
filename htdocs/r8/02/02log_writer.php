@@ -23,11 +23,22 @@
         if (!empty($name)) {
             $date = date("Y-m-d H:i:s");
 
-            $log = $date . " / " . $name . " / login¥n ";
+            $log = $date . " / " . $name . " / login\n";
             file_put_contents($file, $log, FILE_APPEND);
 
             echo "<p>ログを保存しました。</p>";
         }
+    }
+
+    echo "<h2>ログ一覧</h2>";
+
+    if (file_exists($file)) {
+        $logs = file($file);
+        echo "<ul>";
+        foreach ($logs as $log) {
+            echo "<li>" . $log . "</li>";
+        }
+        echo "</ul>";
     }
     ?>
 </body>
